@@ -8,6 +8,14 @@ MongoDB migration tool with minimal api.
 - Manage schema in pure JSON
 - No magic, all configurations comes from standard MongoDB commands
 
+## Install
+
+This module is currently not exposed in any open source repository, so you will need to install by yourself.
+Therefore release artifact is checked into this repository.
+
+1. Copy binary for your OS from dist
+2. Move the binary with `cp dist/darwin/migrate /usr/local/bin/migrate`
+
 ## Commands
 
 Export MongoDB connection as URI before running any commands.
