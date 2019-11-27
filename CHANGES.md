@@ -4,6 +4,7 @@
 
 ## 0.2.0
 
+- Feature: Zipped each builds
 - Bugfix: Referenced to nil object
 
 ## 0.1.0

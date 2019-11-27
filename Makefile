@@ -13,8 +13,11 @@ install:
 run:
 	go run .
 
-build:
-	gox -osarch "darwin/amd64 linux/amd64 windows/amd64" -output "build/$(APP)-{{.OS}}"
+build: clean
+	gox -osarch "darwin/amd64 linux/amd64 windows/amd64" -output "build/{{.OS}}/$(APP)"
+	cd build/darwin  && zip migrate-darwin.zip  migrate
+	cd build/linux   && zip migrate-linux.zip   migrate
+	cd build/windows && zip migrate-windows.zip migrate.exe
 
 docker-up:
 	docker-compose up -d
