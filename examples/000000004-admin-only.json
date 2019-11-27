@@ -1,0 +1,9 @@
+{
+  "adminCommand": {
+    "shardCollection": "<db>.adminonly",
+    "unique": false,
+    "key": {
+      "_id": "hashed"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "adminCommand": {
+    "shardCollection": "<db>.users",
+    "unique": false,
+    "key": {
+      "_id": "hashed"
+    }
+  },
+  "command": {
+    "createIndexes": "users",
+    "indexes": [
+      {
+        "key": {
+          "whatever": 1
+        },
+        "unique": false
+      }
+    ]
+  }
+}
