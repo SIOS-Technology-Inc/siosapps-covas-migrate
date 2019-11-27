@@ -68,14 +68,6 @@ func main() {
 					return nil
 				},
 			},
-			{
-				Name:  "status",
-				Usage: "See all status",
-				Action: func(c *cli.Context) error {
-					Status()
-					return nil
-				},
-			},
 		},
 	}
 

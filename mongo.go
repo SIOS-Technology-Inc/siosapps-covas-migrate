@@ -219,19 +219,3 @@ func Apply(in *Command) error {
 
 	return nil
 }
-
-// Status prints out database status, and panic if anything go wrong.
-func Status() {
-
-	fmt.Println("collections:")
-
-	results, err := handler().ListCollectionNames(ctx(), bson.D{{"options.capped", true}})
-
-	if err != nil {
-		panic(err)
-	}
-
-	for _, coll := range results {
-		fmt.Println(coll)
-	}
-}
