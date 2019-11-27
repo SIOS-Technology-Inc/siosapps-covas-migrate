@@ -2,6 +2,8 @@
 
 ## Next
 
+## 0.2.0
+
 - Bugfix: Referenced to nil object
 
 ## 0.1.0
