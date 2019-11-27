@@ -2,6 +2,8 @@
 
 ## Next
 
+## 0.1.0
+
 - Cleanup: Put binaries on releases
 - Feature: Ensured zero string value when adminCommand or command does not exist
 - Feature: Added README
