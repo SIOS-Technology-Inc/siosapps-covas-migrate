@@ -1,0 +1,14 @@
+{
+  "command": {
+    "createIndexes": "adminonly",
+    "indexes": [
+      {
+        "key": {
+          "username": 1
+        },
+        "unique": false
+      }
+    ]
+  }
+}
+

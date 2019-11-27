@@ -37,21 +37,52 @@ func parseCommand(filepath, dbname string) (*Command, error) {
 	// Extract string representations.
 	// You cannot use standard json.Unmarshal command, because
 	// the attributes are object and unmarshaller returns error.
-	ar, _, _, err := jsonparser.Get(got, "adminCommand")
+
+	admin, err := func() (string, error) {
+		val, typ, _, err := jsonparser.Get(got, "adminCommand")
+
+		if err != nil {
+			// Skip when schema may not contain adminCommand.
+			if typ != jsonparser.NotExist {
+				return "", err
+			}
+		}
+
+		if typ == jsonparser.NotExist {
+			return "", nil
+		}
+
+		return string(val), nil
+	}()
 
 	if err != nil {
 		return nil, err
 	}
 
-	out.Admin = string(ar)
+	out.Admin = admin
 
-	gr, _, _, err := jsonparser.Get(got, "command")
+	general, err := func() (string, error) {
+		val, typ, _, err := jsonparser.Get(got, "command")
+
+		if err != nil {
+			// Skip when schema may not contain adminCommand.
+			if typ != jsonparser.NotExist {
+				return "", err
+			}
+		}
+
+		if typ == jsonparser.NotExist {
+			return "", nil
+		}
+
+		return string(val), nil
+	}()
 
 	if err != nil {
 		return nil, err
 	}
 
-	out.General = string(gr)
+	out.General = general
 
 	return out, nil
 }
