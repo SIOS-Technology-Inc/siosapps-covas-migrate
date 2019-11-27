@@ -14,7 +14,7 @@ This module is currently not exposed in any open source repository, so you will 
 
 Therefore release artifact is checked into this repository.
 
-1. Copy binary for your OS from [releases](releases)
+1. Copy binary for your OS from [releases](https://sios.tech/covas/migrate/releases)
 2. Move the binary to `/usr/local/bin/migrate`
 
 ## Commands
