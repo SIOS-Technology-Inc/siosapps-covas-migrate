@@ -1,0 +1,36 @@
+{
+  "adminCommand": {
+    "shardCollection": "<db>.compound",
+    "unique": false,
+    "key": {
+      "_id": "hashed"
+    }
+  },
+  "command": {
+    "createIndexes": "compound",
+    "indexes": [
+      {
+        "key": {
+          "username": 1
+        },
+        "unique": false
+      },
+      {
+        "key": {
+          "email": 1,
+          "isAdmin": 1
+        },
+        "unique": false
+      },
+      {
+        "key": {
+          "_id": 1,
+          "username": 1,
+          "email": 1,
+          "isAdmin": 1
+        },
+        "unique": true
+      }
+    ]
+  }
+}
