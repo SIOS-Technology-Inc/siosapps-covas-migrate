@@ -13,8 +13,8 @@ MongoDB migration tool with minimal api.
 This module is currently not exposed in any open source repository, so you will need to install by yourself.
 Therefore release artifact is checked into this repository.
 
-1. Copy binary for your OS from dist
-2. Move the binary with `cp dist/darwin/migrate /usr/local/bin/migrate`
+1. Copy binary for your OS from releases
+2. Move the binary to `/usr/local/bin/migrate`
 
 ## Commands
 
