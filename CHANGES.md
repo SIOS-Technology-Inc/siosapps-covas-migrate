@@ -2,6 +2,8 @@
 
 ## Next
 
+- Feature: Made tests to pass
+
 ## 0.2.0
 
 - Feature: Zipped each builds

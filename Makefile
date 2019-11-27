@@ -29,4 +29,4 @@ docker-down:
 test:
 	$(MAKE) docker-up
 	go test -v ./... -count=1
-#	$(MAKE) docker-down
+	$(MAKE) docker-down

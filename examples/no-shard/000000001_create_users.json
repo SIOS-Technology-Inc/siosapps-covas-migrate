@@ -1,0 +1,14 @@
+{
+  "command": {
+    "create": "users",
+    "createIndexes": "users",
+    "indexes": [
+      {
+        "key": {
+          "whatever": 1
+        },
+        "unique": false
+      }
+    ]
+  }
+}

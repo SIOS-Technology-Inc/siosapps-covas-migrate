@@ -147,8 +147,7 @@ func TestFilename(t *testing.T) {
 }
 
 func TestApply(t *testing.T) {
-	first := "000000001_users.json"
-	// second := "000000002_admins.json"
+	first := "no-shard/000000001_create_users.json"
 
 	// OK with init value on existing directory.
 	func() {
