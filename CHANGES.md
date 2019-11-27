@@ -2,6 +2,8 @@
 
 ## Next
 
+- Bugfix: Referenced to nil object
+
 ## 0.1.0
 
 - Cleanup: Put binaries on releases
