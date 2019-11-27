@@ -12,7 +12,7 @@ func main() {
 	app := &cli.App{
 		Name:    "migrate",
 		Usage:   "MongoDB migration tool with minimal api",
-		Version: "0.1.0",
+		Version: "0.2.0",
 		Commands: []*cli.Command{
 			{
 				Name:  "init",
@@ -43,6 +43,7 @@ func main() {
 						}
 
 						fmt.Printf("ok \n")
+
 						fmt.Printf("retrieving the changes.. ")
 
 						next, err := Next(c.String("dir"), cur)
@@ -52,13 +53,12 @@ func main() {
 							return err
 						}
 
-						fmt.Printf("%s \n", next.Version)
-
 						if next == nil {
-							fmt.Printf("no more migrations\n")
+							fmt.Printf("no more migrations. \n")
 							break
 						}
 
+						fmt.Printf("%s \n", next.Version)
 						fmt.Printf("applying changes.. ")
 
 						if err := Apply(next); err != nil {
