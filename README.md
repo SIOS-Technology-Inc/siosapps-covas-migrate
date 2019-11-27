@@ -11,9 +11,10 @@ MongoDB migration tool with minimal api.
 ## Install
 
 This module is currently not exposed in any open source repository, so you will need to install by yourself.
+
 Therefore release artifact is checked into this repository.
 
-1. Copy binary for your OS from releases
+1. Copy binary for your OS from [releases](releases)
 2. Move the binary to `/usr/local/bin/migrate`
 
 ## Commands
@@ -34,13 +35,9 @@ Export MongoDB connection as URI before running any commands.
 
     migrate up
 
-### Check status
-
-    migrate status
-
 ### Rollback migration
 
-We don't have such command, take care by yourself.
+There is no such command, take care by yourself.
 
 ## How it works
 
