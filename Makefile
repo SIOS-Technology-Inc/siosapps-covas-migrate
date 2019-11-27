@@ -14,7 +14,7 @@ run:
 	go run .
 
 build:
-	gox -osarch "darwin/amd64 linux/amd64 windows/amd64" -output "build/{{.OS}}/$(APP)"
+	gox -osarch "darwin/amd64 linux/amd64 windows/amd64" -output "build/$(APP)-{{.OS}}"
 
 docker-up:
 	docker-compose up -d
