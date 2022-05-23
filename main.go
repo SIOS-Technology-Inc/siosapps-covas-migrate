@@ -76,6 +76,52 @@ func main() {
 					return nil
 				},
 			},
+			{
+				Name:  "fix",
+				Usage: "Run migration",
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:    "file",
+						Aliases: []string{"f"},
+						Value:   "migrations",
+						Usage:   "Input your JSON file",
+					},
+				},
+				Action: func(c *cli.Context) error {
+					file := c.String("file")
+					if err := Update(file); err != nil {
+						fmt.Printf("failed, %s \n", err)
+						return err
+					}
+
+					fmt.Println(file)
+					fmt.Println("done!")
+					return nil
+				},
+			},
+			{
+				Name:  "revert",
+				Usage: "Revert migration pointer",
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:    "name",
+						Aliases: []string{"n"},
+						Value:   "pointer file name",
+						Usage:   "Target file you want to revert",
+					},
+				},
+				Action: func(c *cli.Context) error {
+					fileName := c.String("name")
+					if err := Revert(fileName); err != nil {
+						fmt.Printf("failed, %s \n", err)
+						return err
+					}
+
+					fmt.Println(fileName)
+					fmt.Println("done!")
+					return nil
+				},
+			},
 		},
 	}
 

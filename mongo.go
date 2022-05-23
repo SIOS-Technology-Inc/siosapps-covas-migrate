@@ -219,3 +219,76 @@ func Apply(in *Command) error {
 
 	return nil
 }
+
+func Update (dirName string) error {
+	// Matched to current item, attempt to get next one.
+	in, err := parseCommand(dirName, handler().Name())
+	if err != nil || in == nil {
+		return fmt.Errorf("failed to parse JSON, schema is possibly broken, %s", err)
+	}
+
+	// Run admin command (optional)
+	if in.Admin != "" {
+		if err := func() error {
+			var cmd bson.D
+
+			if err := bson.UnmarshalExtJSON([]byte(in.Admin), true, &cmd); err != nil {
+				return err
+			}
+
+			opts := options.RunCmd().SetReadPreference(readpref.Primary())
+
+			var out bson.M
+
+			// if err := handler().Client().Database("admin").RunCommand(ctx(), debug, opts).Decode(&out); err != nil {
+			if err := handler().Client().Database("admin").RunCommand(ctx(), cmd, opts).Decode(&out); err != nil {
+				return err
+			}
+
+			return nil
+		}(); err != nil {
+			return err
+		}
+	}
+
+	// Run user command (optional)
+	if in.General != "" {
+		if err := func() error {
+			var cmd bson.D
+
+			if err := bson.UnmarshalExtJSON([]byte(in.General), true, &cmd); err != nil {
+				return err
+			}
+			fmt.Println(cmd)
+
+			opts := options.RunCmd().SetReadPreference(readpref.Primary())
+
+			var out bson.M
+
+			if err := handler().RunCommand(ctx(), cmd, opts).Decode(&out); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func Revert (fileName string) error {
+	if err := func() error {
+		opts := options.FindOneAndUpdate().SetUpsert(true)
+		q := bson.D{{migrationKey, bson.D{{"$exists", true}}}}
+		update := bson.D{{"$set", bson.D{{migrationKey, fileName}}}}
+
+		var updated bson.M
+
+		return handler().Collection(migrationCollection).FindOneAndUpdate(ctx(), q, update, opts).Decode(&updated)
+	}(); err != nil {
+		return err
+	}
+
+	return nil
+}
