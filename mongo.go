@@ -220,7 +220,7 @@ func Apply(in *Command) error {
 	return nil
 }
 
-func Update (dirName string) error {
+func Update (dirName, adminFlag string) error {
 	// Matched to current item, attempt to get next one.
 	in, err := parseCommand(dirName, handler().Name())
 	if err != nil || in == nil {
@@ -229,25 +229,27 @@ func Update (dirName string) error {
 
 	// Run admin command (optional)
 	if in.Admin != "" {
-		if err := func() error {
-			var cmd bson.D
+		if adminFlag != "true" {
+			if err := func() error {
+				var cmd bson.D
 
-			if err := bson.UnmarshalExtJSON([]byte(in.Admin), true, &cmd); err != nil {
+				if err := bson.UnmarshalExtJSON([]byte(in.Admin), true, &cmd); err != nil {
+					return err
+				}
+
+				opts := options.RunCmd().SetReadPreference(readpref.Primary())
+
+				var out bson.M
+
+				// if err := handler().Client().Database("admin").RunCommand(ctx(), debug, opts).Decode(&out); err != nil {
+				if err := handler().Client().Database("admin").RunCommand(ctx(), cmd, opts).Decode(&out); err != nil {
+					return err
+				}
+
+				return nil
+			}(); err != nil {
 				return err
 			}
-
-			opts := options.RunCmd().SetReadPreference(readpref.Primary())
-
-			var out bson.M
-
-			// if err := handler().Client().Database("admin").RunCommand(ctx(), debug, opts).Decode(&out); err != nil {
-			if err := handler().Client().Database("admin").RunCommand(ctx(), cmd, opts).Decode(&out); err != nil {
-				return err
-			}
-
-			return nil
-		}(); err != nil {
-			return err
 		}
 	}
 

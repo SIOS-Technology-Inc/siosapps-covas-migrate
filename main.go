@@ -86,10 +86,17 @@ func main() {
 						Value:   "migrations",
 						Usage:   "Input your JSON file",
 					},
+					&cli.StringFlag{
+						Name:    "admin",
+						Aliases: []string{"a"},
+						Value:   "false",
+						Usage:   "AdminCommand is run, if flag is true.",
+					},
 				},
 				Action: func(c *cli.Context) error {
 					file := c.String("file")
-					if err := Update(file); err != nil {
+					adminFlag := c.String("admin")
+					if err := Update(file, adminFlag); err != nil {
 						fmt.Printf("failed, %s \n", err)
 						return err
 					}
