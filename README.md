@@ -35,6 +35,25 @@ Export MongoDB connection as URI before running any commands.
 
     migrate up
 
+### Fix migration
+
+マイグレーションに失敗したファイルを再マイグレーションするコマンド。
+
+    migrate fix -f <ファイル名>
+
+### Revert migration pointer
+
+DB に記録されているマイグレーションポインタをリセットするコマンド。
+（DB に現在のマイグレーション状況をファイル名で保存していく仕組みなので、失敗したときはそれを巻き戻すコマンドが必要になる。）
+
+    migrate revert -n <ファイル名>
+
+### Find index
+
+コレクションに記録されたインデックスを確認するコマンド（標準出力で表示される）。
+
+    migrate find -n <コレクション名>
+
 ### Rollback migration
 
 There is no such command, take care by yourself.
