@@ -129,6 +129,35 @@ func main() {
 					return nil
 				},
 			},
+			{
+				Name:  "index",
+				Usage: "find index by collection name",
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:    "name",
+						Aliases: []string{"n"},
+						Value:   "",
+						Usage:   "Target collection you want to index",
+					},
+				},
+				Action: func(c *cli.Context) error {
+					collectionName := c.String("name")
+
+					if collectionName == "" {
+						fmt.Println("required name option")
+						return nil
+					}
+
+					if err := FindIndex(collectionName); err != nil {
+						fmt.Printf("failed, %s \n", err)
+						return err
+					}
+
+					fmt.Println(collectionName)
+					fmt.Println("done!")
+					return nil
+				},
+			},
 		},
 	}
 

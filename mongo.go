@@ -294,3 +294,23 @@ func Revert (fileName string) error {
 
 	return nil
 }
+
+func FindIndex (collectionName string) error {
+	indexView := handler().Collection(collectionName).Indexes()
+	opts := options.ListIndexes().SetMaxTime(2 * time.Second)
+	cursor, err := indexView.List(context.TODO(), opts)
+	if err != nil {
+		return err
+	}
+	var result []bson.M
+	if err = cursor.All(context.TODO(), &result); err != nil {
+		return err
+	}
+	for _, v := range result {
+		for k1, v1 := range v {
+			fmt.Printf("%v: %v\n", k1, v1)
+		}
+		fmt.Println()
+	}
+	return nil
+}
