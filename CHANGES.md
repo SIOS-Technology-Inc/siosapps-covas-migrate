@@ -2,7 +2,12 @@
 
 ## Next
 
-- Feature: Made tests to pass
+## 0.5.1
+- Feature: When Failed run command, return exit 1
+
+## 0.5.0
+- Changed: update go version
+- Changed: update go packeges
 
 ## 0.2.0
 

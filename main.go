@@ -12,7 +12,7 @@ func main() {
 	app := &cli.App{
 		Name:    "migrate",
 		Usage:   "MongoDB migration tool with minimal api",
-		Version: "0.5.0",
+		Version: "0.5.1",
 		Commands: []*cli.Command{
 			{
 				Name:  "init",
@@ -161,5 +161,9 @@ func main() {
 		},
 	}
 
-	app.Run(os.Args)
+	err := app.Run(os.Args)
+	if err != nil {
+		// エラーがある場合は異常終了にしたい
+		os.Exit(1)
+	}
 }
