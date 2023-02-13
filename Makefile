@@ -20,11 +20,11 @@ build: clean
 	cd build/windows && zip migrate-windows.zip migrate.exe
 
 docker-up:
-	docker-compose up -d
+	docker compose up -d
 
 docker-down:
-	docker-compose kill
-	docker-compose rm --force
+	docker compose kill
+	docker compose rm --force
 
 test:
 	$(MAKE) docker-up

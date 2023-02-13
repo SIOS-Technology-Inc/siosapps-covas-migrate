@@ -1,12 +1,12 @@
 {
   "command": {
-    "create": "users",
     "createIndexes": "users",
     "indexes": [
       {
         "key": {
           "whatever": 1
         },
+        "name": "users_whatever",
         "unique": false
       }
     ]

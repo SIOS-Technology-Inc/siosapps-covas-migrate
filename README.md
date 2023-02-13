@@ -78,7 +78,7 @@ See [examples](examples) for more information.
 
 Install these dependencies into your machine.
 
-- Go 1.13+
+- Go 1.20+
 - Docker
 - docker-compose
 
