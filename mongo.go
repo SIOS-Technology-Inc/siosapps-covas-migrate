@@ -194,7 +194,6 @@ func Apply(in *Command) error {
 			opts := options.RunCmd().SetReadPreference(readpref.Primary())
 
 			var out bson.M
-
 			if err := handler().RunCommand(ctx(), cmd, opts).Decode(&out); err != nil {
 				return err
 			}
@@ -220,7 +219,7 @@ func Apply(in *Command) error {
 	return nil
 }
 
-func Update (dirName, adminFlag string) error {
+func Update(dirName, adminFlag string) error {
 	// Matched to current item, attempt to get next one.
 	in, err := parseCommand(dirName, handler().Name())
 	if err != nil || in == nil {
@@ -279,7 +278,7 @@ func Update (dirName, adminFlag string) error {
 	return nil
 }
 
-func Revert (fileName string) error {
+func Revert(fileName string) error {
 	if err := func() error {
 		opts := options.FindOneAndUpdate().SetUpsert(true)
 		q := bson.D{{migrationKey, bson.D{{"$exists", true}}}}
@@ -295,7 +294,7 @@ func Revert (fileName string) error {
 	return nil
 }
 
-func FindIndex (collectionName string) error {
+func FindIndex(collectionName string) error {
 	indexView := handler().Collection(collectionName).Indexes()
 	opts := options.ListIndexes().SetMaxTime(2 * time.Second)
 	cursor, err := indexView.List(context.TODO(), opts)
