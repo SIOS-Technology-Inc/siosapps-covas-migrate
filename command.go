@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/buger/jsonparser"
@@ -20,7 +20,7 @@ func parseCommand(filepath, dbname string) (*Command, error) {
 		return nil, fmt.Errorf("invalid input for parse")
 	}
 
-	got, err := ioutil.ReadFile(filepath)
+	got, err := os.ReadFile(filepath)
 
 	if err != nil {
 		return nil, err

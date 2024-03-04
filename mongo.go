@@ -58,7 +58,7 @@ func Setup() error {
 	func() {
 		var result bson.M
 
-		q := bson.D{{migrationKey, bson.D{{"$exists", true}}}}
+		q := bson.D{{Key: migrationKey, Value: bson.D{{Key: "$exists", Value: true}}}}
 		opts := options.FindOne()
 
 		err := handler().Collection(migrationCollection).FindOne(ctx(), q, opts).Decode(&result)
@@ -89,7 +89,7 @@ func filename(given string) string {
 
 // Current retrieves migration history.
 func Current() (string, error) {
-	q := bson.D{{migrationKey, bson.D{{"$exists", true}}}}
+	q := bson.D{{Key: migrationKey, Value: bson.D{{Key: "$exists", Value: true}}}}
 	opts := options.FindOne()
 
 	var result bson.M
@@ -206,8 +206,8 @@ func Apply(in *Command) error {
 	// After everything is done, update state to be the latest.
 	if err := func() error {
 		opts := options.FindOneAndUpdate().SetUpsert(true)
-		q := bson.D{{migrationKey, bson.D{{"$exists", true}}}}
-		update := bson.D{{"$set", bson.D{{migrationKey, in.Version}}}}
+		q := bson.D{{Key: migrationKey, Value: bson.D{{Key: "$exists", Value: true}}}}
+		update := bson.D{{Key: "$set", Value: bson.D{{Key: migrationKey, Value: in.Version}}}}
 
 		var updated bson.M
 
@@ -281,8 +281,8 @@ func Update(dirName, adminFlag string) error {
 func Revert(fileName string) error {
 	if err := func() error {
 		opts := options.FindOneAndUpdate().SetUpsert(true)
-		q := bson.D{{migrationKey, bson.D{{"$exists", true}}}}
-		update := bson.D{{"$set", bson.D{{migrationKey, fileName}}}}
+		q := bson.D{{Key: migrationKey, Value: bson.D{{Key: "$exists", Value: true}}}}
+		update := bson.D{{Key: "$set", Value: bson.D{{Key: migrationKey, Value: fileName}}}}
 
 		var updated bson.M
 

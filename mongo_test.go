@@ -6,7 +6,6 @@ import (
 	"testing"
 )
 
-var original = os.Getenv("URI")
 
 func TestHandler(t *testing.T) {
 	os.Setenv("URI", "mongodb://root:password@localhost:30000/demo?authSource=admin")
@@ -132,9 +131,9 @@ func TestFilename(t *testing.T) {
 	}
 
 	pats := []pattern{
-		pattern{"/some/dir/00000_users.json", "00000_users.json"},
-		pattern{"./00000_users.json", "00000_users.json"},
-		pattern{"file:///00000_users.json", "00000_users.json"},
+		{"/some/dir/00000_users.json", "00000_users.json"},
+		{"./00000_users.json", "00000_users.json"},
+		{"file:///00000_users.json", "00000_users.json"},
 	}
 
 	for idx, p := range pats {

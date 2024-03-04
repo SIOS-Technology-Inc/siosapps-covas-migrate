@@ -14,7 +14,7 @@ func TestURI(t *testing.T) {
 		}
 
 		patterns := []pattern{
-			pattern{
+			{
 				given: "mongodb://user:pass@localhost:27017/db",
 				exp: &URI{
 					Host:     "localhost:27017",
