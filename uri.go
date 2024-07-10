@@ -22,7 +22,7 @@ func ParseURI(given string) (*URI, error) {
 		return nil, err
 	}
 
-	if u.Scheme != "mongodb" {
+	if u.Scheme != "mongodb" && u.Scheme != "mongodb+srv" {
 		return nil, fmt.Errorf("scheme must be mongodb")
 	}
 

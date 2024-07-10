@@ -2,10 +2,16 @@
 
 ## Next
 
+## 0.5.2
+
+- Changed: Azure CosmosDB for MongoDB API 仮想コアの接続先 URI に対応
+
 ## 0.5.1
+
 - Feature: When Failed run command, return exit 1
 
 ## 0.5.0
+
 - Changed: update go version
 - Changed: update go packeges
 

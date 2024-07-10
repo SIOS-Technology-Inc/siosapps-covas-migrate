@@ -12,7 +12,7 @@ func main() {
 	app := &cli.App{
 		Name:    "migrate",
 		Usage:   "MongoDB migration tool with minimal api",
-		Version: "0.5.1",
+		Version: "0.5.2",
 		Commands: []*cli.Command{
 			{
 				Name:  "init",

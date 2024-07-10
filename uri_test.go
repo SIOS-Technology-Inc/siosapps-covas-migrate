@@ -23,6 +23,15 @@ func TestURI(t *testing.T) {
 					Database: "db",
 				},
 			},
+			{
+				given: "mongodb+srv://username:password@service.mongocluster.cosmos.azure.com/canary?tls=true&authMechanism=SCRAM-SHA-256",
+				exp: &URI{
+					Host:     "service.mongocluster.cosmos.azure.com",
+					Username: "username",
+					Password: "password",
+					Database: "canary",
+				},
+			},
 		}
 
 		for idx, p := range patterns {
