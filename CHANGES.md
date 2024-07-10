@@ -2,9 +2,13 @@
 
 ## Next
 
-## 0.5.2
+## 0.5.3
 
 - Changed: Azure CosmosDB for MongoDB API 仮想コアの接続先 URI に対応
+
+## 0.5.2
+
+- Changed: update mongo-go-driver
 
 ## 0.5.1
 
