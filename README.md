@@ -33,7 +33,7 @@ Export MongoDB connection as URI before running any commands.
 
 ### Run migration
 
-    migrate up
+    migrate up -d "migrations" -r "develop"
 
 ### Fix migration
 
@@ -67,10 +67,10 @@ The JSON schema must have the following format.
       "command": {}
     }
 
-- Anything inside `adminCommand` goes to `db.admin().runCommand({})`
+- Anything inside `adminCommand` goes to `az cosmosdb collection **`
 - `command` goes to `db.runCommand({})`
 
-See [examples](examples) for more information.
+See [examples](examples-v2) for more information.
 
 ## Development
 
@@ -96,6 +96,6 @@ Install these dependencies into your machine.
 
 ### Build
 
-Using [gox](https://github.com/mitchellh/gox) to build cross platform binaries.
+Build cross platform binaries.
 
     make build

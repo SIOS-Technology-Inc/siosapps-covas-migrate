@@ -14,7 +14,9 @@ run:
 	go run .
 
 build: clean
-	gox -osarch "darwin/amd64 linux/amd64 windows/amd64" -output "build/{{.OS}}/$(APP)"
+	GOOS=windows go build -o build/windows/$(APP).exe
+	GOOS=darwin  go build -o build/darwin/$(APP)
+	GOOS=linux   go build -o build/linux/$(APP)
 	cd build/darwin  && zip migrate-darwin.zip  migrate
 	cd build/linux   && zip migrate-linux.zip   migrate
 	cd build/windows && zip migrate-windows.zip migrate.exe

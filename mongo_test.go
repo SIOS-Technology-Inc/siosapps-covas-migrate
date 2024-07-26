@@ -6,7 +6,6 @@ import (
 	"testing"
 )
 
-
 func TestHandler(t *testing.T) {
 	os.Setenv("URI", "mongodb://root:password@localhost:30000/demo?authSource=admin")
 
@@ -171,14 +170,18 @@ func TestApply(t *testing.T) {
 			return
 		}
 
-		if err := Apply(cmd); err != nil {
+		u, _ := ParseURI(os.Getenv("URI"))
+
+		if err := Apply(cmd, u, "develop"); err != nil {
 			t.Errorf("should not fail, error %s", err)
 		}
 	}()
 
 	// Fails on nil input.
 	func() {
-		if err := Apply(nil); err == nil {
+		os.Setenv("URI", "mongodb://root:password@localhost:30000/test-apply?authSource=admin&retrywrites=false")
+		u, _ := ParseURI(os.Getenv("URI"))
+		if err := Apply(nil, u, "develop"); err == nil {
 			t.Errorf("must pass")
 		}
 	}()

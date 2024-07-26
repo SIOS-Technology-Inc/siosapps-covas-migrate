@@ -1,0 +1,35 @@
+name: build.migrate
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go 1.22
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.22
+
+      - name: Get dependencies
+        run: go mod download
+
+      - name: Build
+        run: make build
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./build/**/*.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: ${{ github.ref }}
+          draft: false
+          prerelease: false

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -53,7 +54,11 @@ const migrationCollection = "migrations"
 const migrationKey = "latest"
 const migrationInitValue = "0"
 
-// Setup collection to store migration history.
+/*
+Setup collection to store migration history.
+
+マイグレーション履歴を保存するためのコレクションをセットアップします。
+*/
 func Setup() error {
 	func() {
 		var result bson.M
@@ -72,7 +77,7 @@ func Setup() error {
 		}
 	}()
 
-	rec := bson.M{migrationKey: migrationInitValue}
+	rec := bson.D{{Key: migrationKey, Value: migrationInitValue}}
 
 	if _, err := handler().Collection(migrationCollection).InsertOne(ctx(), rec); err != nil {
 		return fmt.Errorf("failed to setup initial collection, %s", err)
@@ -87,7 +92,11 @@ func filename(given string) string {
 	return chunks[len(chunks)-1]
 }
 
-// Current retrieves migration history.
+/*
+Current retrieves migration history.
+
+マイグレーション履歴を取得します。
+*/
 func Current() (string, error) {
 	q := bson.D{{Key: migrationKey, Value: bson.D{{Key: "$exists", Value: true}}}}
 	opts := options.FindOne()
@@ -101,7 +110,11 @@ func Current() (string, error) {
 	return result["latest"].(string), nil
 }
 
-// Next returns a migration target within the given directory.
+/*
+Next returns a migration target within the given directory.
+
+指定されたディレクトリ内のマイグレーション対象を返します。
+*/
 func Next(dir, current string) (*Command, error) {
 
 	paths, err := filepath.Glob(fmt.Sprintf("%s/*.json", dir))
@@ -152,33 +165,65 @@ func Next(dir, current string) (*Command, error) {
 	return nil, nil
 }
 
-// Apply changes to target database.
-func Apply(in *Command) error {
+/*
+Apply changes to target database.
+
+データベースに変更を適用します。
+
+	@param in *Command
+	@param u URI
+*/
+func Apply(in *Command, u *URI, rg string) error {
 	if in == nil {
 		return fmt.Errorf("invalid command given")
 	}
 
 	// Run admin command (optional)
+	// TODO: Azure CLIに変更
 	if in.Admin != "" {
-		if err := func() error {
-			var cmd bson.D
+		// ローカル環境用の処理
+		if strings.Contains(u.Host, "localhost") {
+			if err := func() error {
+				var cmd bson.D
 
-			if err := bson.UnmarshalExtJSON([]byte(in.Admin), true, &cmd); err != nil {
+				if err := bson.UnmarshalExtJSON([]byte(in.Admin), true, &cmd); err != nil {
+					return err
+				}
+
+				opts := options.RunCmd().SetReadPreference(readpref.Primary())
+
+				var out bson.M
+
+				// if err := handler().Client().Database("admin").RunCommand(ctx(), debug, opts).Decode(&out); err != nil {
+				if err := handler().Client().Database("admin").RunCommand(ctx(), cmd, opts).Decode(&out); err != nil {
+					return err
+				}
+
+				return nil
+			}(); err != nil {
 				return err
 			}
+		} else {
+			// Azure環境用の処理
+			if err := func() error {
+				var cmd AzureCommand
 
-			opts := options.RunCmd().SetReadPreference(readpref.Primary())
+				if err := json.Unmarshal([]byte(in.Admin), &cmd); err != nil {
+					return err
+				}
+				fmt.Println(cmd.Description)
+				opts, err := cmd.CreateCommand(Create, rg, u.Username, u.Database)
+				if err != nil {
+					return err
+				}
+				if _, err := AzExcute(opts); err != nil {
+					return err
+				}
 
-			var out bson.M
-
-			// if err := handler().Client().Database("admin").RunCommand(ctx(), debug, opts).Decode(&out); err != nil {
-			if err := handler().Client().Database("admin").RunCommand(ctx(), cmd, opts).Decode(&out); err != nil {
+				return nil
+			}(); err != nil {
 				return err
 			}
-
-			return nil
-		}(); err != nil {
-			return err
 		}
 	}
 
@@ -219,7 +264,7 @@ func Apply(in *Command) error {
 	return nil
 }
 
-func Update(dirName, adminFlag string) error {
+func Update(dirName, adminFlag string, u *URI, rg string) error {
 	// Matched to current item, attempt to get next one.
 	in, err := parseCommand(dirName, handler().Name())
 	if err != nil || in == nil {
@@ -229,25 +274,49 @@ func Update(dirName, adminFlag string) error {
 	// Run admin command (optional)
 	if in.Admin != "" {
 		if adminFlag != "true" {
-			if err := func() error {
-				var cmd bson.D
+			// ローカル環境用の処理
+			if strings.Contains(u.Host, "localhost") {
+				if err := func() error {
+					var cmd bson.D
 
-				if err := bson.UnmarshalExtJSON([]byte(in.Admin), true, &cmd); err != nil {
+					if err := bson.UnmarshalExtJSON([]byte(in.Admin), true, &cmd); err != nil {
+						return err
+					}
+
+					opts := options.RunCmd().SetReadPreference(readpref.Primary())
+
+					var out bson.M
+
+					// if err := handler().Client().Database("admin").RunCommand(ctx(), debug, opts).Decode(&out); err != nil {
+					if err := handler().Client().Database("admin").RunCommand(ctx(), cmd, opts).Decode(&out); err != nil {
+						return err
+					}
+
+					return nil
+				}(); err != nil {
 					return err
 				}
+			} else {
+				// Azure環境用の処理
+				if err := func() error {
+					var cmd AzureCommand
 
-				opts := options.RunCmd().SetReadPreference(readpref.Primary())
+					if err := json.Unmarshal([]byte(in.Admin), &cmd); err != nil {
+						return err
+					}
+					fmt.Println(cmd.Description)
+					opts, err := cmd.CreateCommand(Create, rg, u.Username, u.Database)
+					if err != nil {
+						return err
+					}
+					if _, err := AzExcute(opts); err != nil {
+						return err
+					}
 
-				var out bson.M
-
-				// if err := handler().Client().Database("admin").RunCommand(ctx(), debug, opts).Decode(&out); err != nil {
-				if err := handler().Client().Database("admin").RunCommand(ctx(), cmd, opts).Decode(&out); err != nil {
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				return nil
-			}(); err != nil {
-				return err
 			}
 		}
 	}

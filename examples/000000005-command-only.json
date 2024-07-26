@@ -6,9 +6,9 @@
         "key": {
           "username": 1
         },
+        "name": "username_1",
         "unique": false
       }
     ]
   }
 }
-

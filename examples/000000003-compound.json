@@ -13,6 +13,7 @@
         "key": {
           "username": 1
         },
+        "name": "username_1",
         "unique": false
       },
       {
@@ -20,6 +21,7 @@
           "email": 1,
           "isAdmin": 1
         },
+        "name": "email_1_isAdmin_1",
         "unique": false
       },
       {
@@ -29,6 +31,7 @@
           "email": 1,
           "isAdmin": 1
         },
+        "name": "_id_1_username_1_email_1_isAdmin_1",
         "unique": true
       }
     ]

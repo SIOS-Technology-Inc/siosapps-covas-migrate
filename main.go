@@ -12,13 +12,15 @@ func main() {
 	app := &cli.App{
 		Name:    "migrate",
 		Usage:   "MongoDB migration tool with minimal api",
-		Version: "0.5.3",
+		Version: "0.6.0",
 		Commands: []*cli.Command{
 			{
 				Name:  "init",
 				Usage: "Setup",
 				Action: func(c *cli.Context) error {
-					return Setup()
+					out := Setup()
+					fmt.Println(out)
+					return out
 				},
 			},
 			{
@@ -30,6 +32,12 @@ func main() {
 						Aliases: []string{"d"},
 						Value:   "migrations",
 						Usage:   "Directory of your JSON files",
+					},
+					&cli.StringFlag{
+						Name:    "rg",
+						Aliases: []string{"r"},
+						Value:   "MyResourceGroup",
+						Usage:   "Resource Group Name",
 					},
 				},
 				Action: func(c *cli.Context) error {
@@ -61,7 +69,9 @@ func main() {
 						fmt.Printf("%s \n", next.Version)
 						fmt.Printf("applying changes.. ")
 
-						if err := Apply(next); err != nil {
+						resourceGroup := c.String("rg")
+						u, _ := ParseURI(os.Getenv("URI"))
+						if err := Apply(next, u, resourceGroup); err != nil {
 							fmt.Printf("failed, %s \n", err)
 							return err
 						}
@@ -92,11 +102,19 @@ func main() {
 						Value:   "false",
 						Usage:   "AdminCommand is run, if flag is true.",
 					},
+					&cli.StringFlag{
+						Name:    "rg",
+						Aliases: []string{"r"},
+						Value:   "MyResourceGroup",
+						Usage:   "Resource Group Name",
+					},
 				},
 				Action: func(c *cli.Context) error {
 					file := c.String("file")
 					adminFlag := c.String("admin")
-					if err := Update(file, adminFlag); err != nil {
+					resourceGroup := c.String("rg")
+					u, _ := ParseURI(os.Getenv("URI"))
+					if err := Update(file, adminFlag, u, resourceGroup); err != nil {
 						fmt.Printf("failed, %s \n", err)
 						return err
 					}

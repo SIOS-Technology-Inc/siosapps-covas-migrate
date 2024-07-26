@@ -15,6 +15,16 @@ type Command struct {
 	General string
 }
 
+/*
+Parse command from file.
+
+The file should contain JSON with following structure:
+
+	{
+		"adminCommand": "JSON",
+		"command": "JSON"
+	}
+*/
 func parseCommand(filepath, dbname string) (*Command, error) {
 	if filepath == "" || dbname == "" {
 		return nil, fmt.Errorf("invalid input for parse")

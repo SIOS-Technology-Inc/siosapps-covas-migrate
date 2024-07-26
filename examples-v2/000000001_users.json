@@ -1,0 +1,22 @@
+{
+  "adminCommand": {
+    "description": "自動スケールコレクションを作成します。コレクション固有RUを設定します。",
+    "collection": "users",
+    "shardKey": "_id",
+    "sharedRU": false,
+    "autoScale": true,
+    "throughput": 4000
+  },
+  "command": {
+    "createIndexes": "users",
+    "indexes": [
+      {
+        "key": {
+          "whatever": 1
+        },
+        "name": "whatever_1",
+        "unique": false
+      }
+    ]
+  }
+}
