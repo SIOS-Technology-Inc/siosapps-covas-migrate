@@ -28,8 +28,6 @@ jobs:
           files: |
             ./build/**/*.zip
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: ${{ github.ref }}
-          name: ${{ github.ref }}
           body: ${{ github.sha }}
           draft: false
           prerelease: false
