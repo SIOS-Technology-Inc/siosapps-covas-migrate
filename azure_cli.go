@@ -9,12 +9,12 @@ import (
 
 // AzureCommand はAzure Cosmos DB for MongoDBのコレクションを管理するためのコマンドを作成するための構造体
 type AzureCommand struct {
-	Description string  `json:"description"`
-	Collection  string  `json:"collection"`
-	ShardKey    *string `json:"shardKey"`
-	SharedRU    bool    `json:"sharedRU"`
-	AutoScale   *bool   `json:"autoScale"`
-	Throughput  *int    `json:"throughput"`
+	Description string `json:"description"`
+	Collection  string `json:"collection"`
+	ShardKey    string `json:"shardKey"`
+	SharedRU    bool   `json:"sharedRU"`
+	AutoScale   *bool  `json:"autoScale"`
+	Throughput  *int   `json:"throughput"`
 }
 type Action string
 
@@ -55,19 +55,27 @@ func (ac *AzureCommand) CreateCommand(action Action, rg string, accountName stri
 	switch action {
 	case Create:
 		args = append(base, "create", "-g", rg, "-a", accountName, "-d", dbName, "-n", ac.Collection)
-		if ac.ShardKey != nil {
-			args = append(args, "--shard", *ac.ShardKey)
+		if ac.ShardKey != "" {
+			args = append(args, "--shard", ac.ShardKey)
+		} else {
+			return nil, fmt.Errorf("shard key is required")
 		}
-		// データベース共有RU/sがオフかつthroughputと指定されていない場合はエラー
-		if !ac.SharedRU && (ac.Throughput == nil || *ac.Throughput < 400) {
+		// データベース共有RU/sがオフかつthroughputが指定されていない場合はエラー
+		if !ac.SharedRU && ac.Throughput == nil {
 			return nil, fmt.Errorf("throughput and maxThroughput cannot be specified at the same time")
 		}
 		if ac.SharedRU {
 			break
 		} else {
 			if ac.AutoScale != nil && *ac.AutoScale {
+				if *ac.Throughput < 4000 {
+					return nil, fmt.Errorf("maxThroughput must be greater than or equal to 4000")
+				}
 				args = append(args, "--max-throughput", fmt.Sprint(*ac.Throughput))
 			} else {
+				if *ac.Throughput < 400 {
+					return nil, fmt.Errorf("throughput must be greater than or equal to 400")
+				}
 				args = append(args, "--throughput", fmt.Sprint(*ac.Throughput))
 			}
 		}

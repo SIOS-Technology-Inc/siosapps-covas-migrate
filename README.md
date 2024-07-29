@@ -17,6 +17,10 @@ Therefore release artifact is checked into this repository.
 1. Copy binary for your OS from [releases](https://sios.tech/covas/migrate/releases)
 2. Move the binary to `/usr/local/bin/migrate`
 
+if you create collections, you need to install [azure-cli](https://pypi.org/project/azure-cli/).
+
+    pip install azure-cli
+
 ## Commands
 
 Export MongoDB connection as URI before running any commands.

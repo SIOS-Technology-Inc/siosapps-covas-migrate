@@ -1,0 +1,20 @@
+{
+  "adminCommand": {
+    "description": "自動スケールコレクションを作成します。データベース共有RUを設定します。",
+    "collection": "users",
+    "shardKey": "_id",
+    "sharedRU": true
+  },
+  "command": {
+    "createIndexes": "users",
+    "indexes": [
+      {
+        "key": {
+          "whatever": 1
+        },
+        "name": "whatever_1",
+        "unique": false
+      }
+    ]
+  }
+}

@@ -7,10 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.6.0] - 2024-0726
+## [0.6.1] - 2024-07-29
 
 ### Changed
-- adminCommandをazure cliで実行するように変更
+
+- shardKey を必須パラメータに変更。shardKey が存在しない場合にエラーを返す。
+
+## [0.6.0] - 2024-07-26
+
+### Changed
+
+- adminCommand を azure cli で実行するように変更
 
 ## 0.5.3
 
