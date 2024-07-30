@@ -216,6 +216,7 @@ func Apply(in *Command, u *URI, rg string) error {
 				if err != nil {
 					return err
 				}
+				fmt.Println(opts)
 				if _, err := AzExcute(opts); err != nil {
 					return err
 				}
