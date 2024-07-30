@@ -43,7 +43,7 @@ Export MongoDB connection as URI before running any commands.
 
 マイグレーションに失敗したファイルを再マイグレーションするコマンド。
 
-    migrate fix -f <ファイル名>
+    migrate fix -f <ファイル名> -a false -r <リソースグループ>
 
 ### Revert migration pointer
 

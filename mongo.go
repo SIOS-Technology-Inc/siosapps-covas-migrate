@@ -274,7 +274,7 @@ func Update(dirName, adminFlag string, u *URI, rg string) error {
 
 	// Run admin command (optional)
 	if in.Admin != "" {
-		if adminFlag != "true" {
+		if adminFlag == "true" {
 			// ローカル環境用の処理
 			if strings.Contains(u.Host, "localhost") {
 				if err := func() error {
