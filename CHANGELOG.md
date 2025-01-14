@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2025-01-14
+
+### Added
+
+- Feature: インデックスの削除機能を追加
+
 ## [0.6.2] - 2024-07-30
 
 ### Fixed

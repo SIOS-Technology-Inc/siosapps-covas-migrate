@@ -12,7 +12,7 @@ func main() {
 	app := &cli.App{
 		Name:    "migrate",
 		Usage:   "MongoDB migration tool with minimal api",
-		Version: "0.6.2",
+		Version: "0.7.0",
 		Commands: []*cli.Command{
 			{
 				Name:  "init",
@@ -172,6 +172,42 @@ func main() {
 					}
 
 					fmt.Println(collectionName)
+					fmt.Println("done!")
+					return nil
+				},
+			},
+			{
+				Name:  "delete",
+				Usage: "delete index by collection name and index name",
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:    "collection",
+						Aliases: []string{"c"},
+						Value:   "",
+						Usage:   "Target collection you want to delete index",
+					},
+					&cli.StringFlag{
+						Name:    "index",
+						Aliases: []string{"i"},
+						Value:   "",
+						Usage:   "Target index you want to delete",
+					},
+				},
+				Action: func(c *cli.Context) error {
+					collectionName := c.String("collection")
+					indexName := c.String("index")
+
+					if collectionName == "" || indexName == "" {
+						fmt.Println("required collection and index option")
+						return nil
+					}
+
+					if err := DeleteIndex(collectionName, indexName); err != nil {
+						fmt.Printf("failed, %s \n", err)
+						return err
+					}
+
+					fmt.Printf("collection: %s, index: %s \n", collectionName, indexName)
 					fmt.Println("done!")
 					return nil
 				},

@@ -194,7 +194,6 @@ func Apply(in *Command, u *URI, rg string) error {
 
 				var out bson.M
 
-				// if err := handler().Client().Database("admin").RunCommand(ctx(), debug, opts).Decode(&out); err != nil {
 				if err := handler().Client().Database("admin").RunCommand(ctx(), cmd, opts).Decode(&out); err != nil {
 					return err
 				}
@@ -380,6 +379,17 @@ func FindIndex(collectionName string) error {
 			fmt.Printf("%v: %v\n", k1, v1)
 		}
 		fmt.Println()
+	}
+	return nil
+}
+
+// DeleteIndex は指定されたコレクションのインデックスを削除します。
+// https://www.mongodb.com/ja-jp/docs/drivers/go/current/fundamentals/indexes/#remove-an-index
+func DeleteIndex(collectionName, indexName string) error {
+	coll := handler().Collection(collectionName)
+	_, err := coll.Indexes().DropOne(context.TODO(), indexName)
+	if err != nil {
+		return err
 	}
 	return nil
 }
