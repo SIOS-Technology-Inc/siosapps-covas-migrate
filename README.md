@@ -62,7 +62,7 @@ DB に記録されているマイグレーションポインタをリセット�
 
 インデックスの名前を指定して削除するコマンド。
 
-    migrate delete -n <インデックス名> -c <コレクション名>
+    migrate delete -i <インデックス名> -c <コレクション名>
 
 ### Rollback migration
 
